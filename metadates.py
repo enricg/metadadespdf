@@ -10,22 +10,23 @@ def recorreDirectori(directori):
         recuperaMetadata(file)
 
 def recuperaMetadata(arxiu):
-    print(arxiu)
+    #print(arxiu)
+    #print(arxiu.name)
     pdf = pdfx.PDFx(str(arxiu))
     pdfjson=pdf.get_metadata()
-    #references_list = pdf.get_references()
-    references_dict = pdf.get_references_as_dict()
-    print(references_dict)
-    #if pdfjson[Title]:
-    #    print(pdfjson[Title])
-    #else:
-    #    print("No hi ha titol")
-    #    print(pdfjson)
-#
-#def renombrar(antic, nou):
-#    archivo = "/home/decodigo/Documentos/python/archivos/archivo.txt"
-#    nombre_nuevo = "/home/decodigo/Documentos/python/archivos/archivo_renombrado.txt"
-#    os.rename(antic, nou)
+    if "Title" in pdfjson:
+        if not (pdfjson.get('Title') is None):
+            #print("Renombrem arxiu de:", arxiu.name, "a:", pdfjson["Title"])
+            renombrar(directori, arxiu.name, pdfjson["Title"])
+    else:
+        print("Arxiu no té títol:", arxiu.name)
+    #print(pdfjson)
+
+def renombrar(ruta, antic, nou):
+    nomantic = ruta + antic
+    nomnou = ruta + nou + ".pdf"
+    print("Nom original:", nomantic, "Nom nou:", nomnou)
+    os.rename(nomantic, nomnou)
 
 # ------------------------------------------------------------------------------
 # Programa principal
@@ -41,5 +42,5 @@ def recuperaMetadata(arxiu):
 #else:
 #    print("Fa falta un paràmetre")/home/enric/Descargas/telegram/Aportes_informaticos
 
-directori = "/home/enric/Descargas/telegram/Aportes_informaticos"
+directori = "/home/enric/Descargas/telegram/Aportes_informaticos/"
 recorreDirectori(directori)
