@@ -10,17 +10,16 @@ def recorreDirectori(directori):
         recuperaMetadata(file)
 
 def recuperaMetadata(arxiu):
-    #print(arxiu)
-    #print(arxiu.name)
-    pdf = pdfx.PDFx(str(arxiu))
-    pdfjson=pdf.get_metadata()
-    if "Title" in pdfjson:
-        if not (pdfjson.get('Title') is None):
-            #print("Renombrem arxiu de:", arxiu.name, "a:", pdfjson["Title"])
-            renombrar(directori, arxiu.name, pdfjson["Title"])
-    else:
-        print("Arxiu no té títol:", arxiu.name)
-    #print(pdfjson)
+    try:
+        pdf = pdfx.PDFx(str(arxiu))
+        pdfjson=pdf.get_metadata()
+        if "Title" in pdfjson:
+            if not (pdfjson.get('Title') is None):
+                renombrar(directori, arxiu.name, pdfjson["Title"])
+        else:
+            print("Arxiu no té títol:", arxiu.name)
+    except ValueError:
+            print("No podem llegir les metadades de l'arxiu", arxiu.name)
 
 def renombrar(ruta, antic, nou):
     nomantic = ruta + antic
