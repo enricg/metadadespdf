@@ -18,6 +18,7 @@ def recuperaMetadata(arxiu):
                 renombrar(directori, arxiu.name, pdfjson["Title"])
         else:
             print("Arxiu no té títol:", arxiu.name)
+            escollirNomNou(directori, arxiu.name, pdfjson)
     except ValueError:
             print("No podem llegir les metadades de l'arxiu", arxiu.name)
 
@@ -26,6 +27,35 @@ def renombrar(ruta, antic, nou):
     nomnou = ruta + nou + ".pdf"
     print("Nom original:", nomantic, "Nom nou:", nomnou)
     os.rename(nomantic, nomnou)
+
+def escollirNomNou(ruta, nom, pdfs):
+    posicio = 0
+    for clau in pdfs:
+        print("{} - {} - {}".format(posicio, clau, pdfs.get(clau)))
+        posicio+=1
+    print("------------------")
+    print("o - Obrir document")
+    print("r - Renombrar document de manera manual")
+    print("s - Sortir del programa")
+
+    sortir = False
+    while  not sortir:
+        opcio = input("Tria una opció:")
+        if opcio == 'o':
+            print("obrir document")
+            os.system('zathura saaaa' + ruta + nom )
+        elif opcio == 'r':
+            print("renombrar manualment")
+        elif opcio == 's':
+            print("Finalització del programa")
+            sortir = True
+            sys.exit()
+        else:
+            print("Has decidit una altra opcío")
+
+    print("L'opció triada és: {}".format(opcio))
+
+
 
 # ------------------------------------------------------------------------------
 # Programa principal
