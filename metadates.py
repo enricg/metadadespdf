@@ -17,7 +17,6 @@ def recuperaMetadata(arxiu):
             if not (pdfjson.get('Title') is None):
                 renombrar(directori, arxiu.name, pdfjson["Title"])
         else:
-            print("Arxiu no té títol:", arxiu.name)
             escollirNomNou(directori, arxiu.name, pdfjson)
     except ValueError:
             print("No podem llegir les metadades de l'arxiu", arxiu.name)
@@ -29,23 +28,26 @@ def renombrar(ruta, antic, nou):
     os.rename(nomantic, nomnou)
 
 def escollirNomNou(ruta, nom, pdfs):
-
     sortir = False
-    while  not sortir:
+    while not sortir:
+        os.system("clear")
+        print("-------------------------------------------------------------")
+        print("Nom del pdf: ", nom)
+        print("-------------------------------------------------------------")
         posicio = 0
         for clau in pdfs:
-            print("{} - {} - {}".format(posicio, clau, pdfs.get(clau)))
+            print("| {}  | {} --> {} ".format(posicio, clau, pdfs.get(clau)))
             posicio+=1
 
-        print("------------------")
-        print("{} - Obrir document".format(posicio))
-        print("{} - Renombrar document de manera manual".format(posicio+1))
-        print("{} - Saltar al segûent arxiu".format(posicio+2))
-        print("------------------")
+        print("-------------------------------------------------------------")
+        print("| {} |  Obrir document".format(posicio))
+        print("| {} |  Renombrar document de manera manual".format(posicio+1))
+        print("| {} |  Saltar al segûent arxiu".format(posicio+2))
+        print("-------------------------------------------------------------")
         opcio = int(input("Tria una opció: "))
         if opcio == posicio:
             print("obrir document")
-            os.system('zathura ' + ruta + nom )
+            os.system('st zathura ' + ruta + nom )
         elif opcio == (posicio+1):
             print("renombrar manualment")
             nomNou = input("Escriu el nom per a l'arxiu: ")
@@ -56,14 +58,10 @@ def escollirNomNou(ruta, nom, pdfs):
             sortir = True
         elif (opcio >= 0 and opcio < posicio):
             print("Has triat una opció possible")
-            #print(list(pdfs.values())[opcio])
             renombrar(ruta, nom, list(pdfs.values())[opcio])
             sortir = True
         else:
-            print("Has decidit una altra opcío")
-        #os.system("clear")
-    print("L'opció triada és: {}".format(opcio))
-
+            print("OPCIO INCORRECTE")
 
 
 # ------------------------------------------------------------------------------
