@@ -11,20 +11,39 @@ def recorreDirectori(directori):
 
 def recuperaMetadata(arxiu):
     try:
+        print("{}".format(arxiu.name))
         pdf = pdfx.PDFx(str(arxiu))
         pdfjson=pdf.get_metadata()
         if "Title" in pdfjson:
             if not (pdfjson.get('Title') is None):
                 renombrar(directori, arxiu.name, pdfjson["Title"])
         else:
-            escollirNomNou(directori, arxiu.name, pdfjson)
+            print("No té títol: {}".format(arxiu.name))
+            #print(pdfjson)
+            escriure_a_fitxer(json.dumps(pdfjson))
+            #escollirNomNou(directori, arxiu.name, pdfjson)
     except ValueError:
             print("No podem llegir les metadades de l'arxiu", arxiu.name)
+
+
+def escriure_a_fitxer(linia):
+    f = open('dadesJSON.txt', 'a')
+    try:
+        f.write(linia + '\n')
+    finally:
+        f.close()
+
+def llistaAString(pdfjson):
+    linia = ""
+    for i in pdfjson:
+       linia = linia + i + ","
+       return linia
 
 def renombrar(ruta, antic, nou):
     nomantic = ruta + antic
     nomnou = ruta + nou + ".pdf"
-    print("Nom original: ", nomantic, "Nom nou:", nomnou)
+    print("Nom original: ", antic, "Nom nou:", nou)
+    #print("Nom original: ", nomantic, "Nom nou:", nomnou)
     os.rename(nomantic, nomnou)
 
 def escollirNomNou(ruta, nom, pdfs):
