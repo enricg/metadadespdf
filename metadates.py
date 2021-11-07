@@ -12,22 +12,24 @@ def recorreDirectori(directori):
 def recuperaMetadata(arxiu):
     try:
         print("{}".format(arxiu.name))
-        pdf = pdfx.PDFx(str(arxiu))
-        pdfjson=pdf.get_metadata()
-        if "Title" in pdfjson:
-            if not (pdfjson.get('Title') is None):
-                renombrar(directori, arxiu.name, pdfjson["Title"])
+        try:
+            pdf = pdfx.PDFx(str(arxiu))
+        except:
+            print("RENOMBRAR MANUALMENT")
+            escriure_a_fitxer(arxiu.name)
         else:
-            print("No té títol: {}".format(arxiu.name))
-            #print(pdfjson)
-            escriure_a_fitxer(json.dumps(pdfjson))
-            #escollirNomNou(directori, arxiu.name, pdfjson)
+            pdfjson=pdf.get_metadata()
+            if "Title" in pdfjson:
+                if not (pdfjson.get('Title') is None):
+                    renombrar(directori, arxiu.name, pdfjson["Title"])
+            else:
+                print("No té títol: {}".format(arxiu.name))
     except ValueError:
             print("No podem llegir les metadades de l'arxiu", arxiu.name)
 
 
 def escriure_a_fitxer(linia):
-    f = open('dadesJSON.txt', 'a')
+    f = open('errors.txt', 'a')
     try:
         f.write(linia + '\n')
     finally:
@@ -98,4 +100,5 @@ def escollirNomNou(ruta, nom, pdfs):
 #    print("Fa falta un paràmetre")/home/enric/Descargas/telegram/Aportes_informaticos
 
 directori = "/home/enric/Descargas/telegram/Aportes_informaticos/"
+#directori = "/home/enric/Projectes/metadates/"
 recorreDirectori(directori)
